@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ScootTrack
+    username: username
+    password: password
+  mail:
+    host: localhost
+    port: 1025
+    username: username
+    password: password
+
+application:
+  security:
+    jwt:
+      secret-key: ZXMKQBBFCLH0ZPAHWN4YGVEGER5NUKD7FGD2321SADA213123DASDGFGFDGBNHJHGF
+      expiration: 8640000
+  mailing:
+    frontend:
+      activation-url: https://scoottrack.pl/activate-account
