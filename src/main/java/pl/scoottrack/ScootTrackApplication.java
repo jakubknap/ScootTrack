@@ -25,11 +25,17 @@ public class ScootTrackApplication {
     @Bean
     public CommandLineRunner runner(RoleRepository roleRepository) {
         return args -> {
-            String USER = "USER";
-            if (roleRepository.findByName(USER)
+            if (roleRepository.findByName("USER")
                               .isEmpty()) {
                 roleRepository.save(Role.builder()
-                                        .name(USER)
+                                        .name("USER")
+                                        .build());
+            }
+
+            if (roleRepository.findByName("ADMIN")
+                              .isEmpty()) {
+                roleRepository.save(Role.builder()
+                                        .name("ADMIN")
                                         .build());
             }
         };
