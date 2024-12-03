@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.scoottrack.notification.NotificationService;
 import pl.scoottrack.role.Role;
 import pl.scoottrack.role.RoleRepository;
 import pl.scoottrack.user.User;
@@ -21,6 +22,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     private final AdminUserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final NotificationService notificationService;
 
     @Override
     public Page<UsersListResponse> getAllUsers(Pageable pageable) {
@@ -29,7 +31,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public void editUser(EditUserRequest request) {
-        User user = getUser(request);
+        User user = getUser(request.uuid());
 
         String email = request.email();
 
@@ -45,19 +47,22 @@ public class AdminUserServiceImpl implements AdminUserService {
         user.setRoles(roles);
 
         userRepository.save(user);
+        notificationService.sendNotification(user.getEmail(), "Twój profil został edytowany przez administratora");
         log.info("User edited successfully");
     }
 
     @Override
     public void deleteUser(UUID uuid) {
+        User user = getUser(uuid);
         userRepository.deleteUserByUuid(uuid);
+        notificationService.sendNotification(user.getEmail(), "Twoje konto zostało usunięte przez administratora");
         log.info("User deleted successfully");
     }
 
-    private User getUser(EditUserRequest request) {
-        return userRepository.findByUuid(request.uuid())
+    private User getUser(UUID userUuid) {
+        return userRepository.findByUuid(userUuid)
                              .orElseThrow(() -> {
-                                 log.error("User with uuid: {} not found", request.uuid());
+                                 log.error("User with uuid: {} not found", userUuid);
                                  return new EntityNotFoundException("Nie znaleziono użytkownika o podanym uuidzie");
                              });
     }
@@ -78,5 +83,4 @@ public class AdminUserServiceImpl implements AdminUserService {
             throw new EntityNotFoundException("Role not found");
         }
     }
-
 }

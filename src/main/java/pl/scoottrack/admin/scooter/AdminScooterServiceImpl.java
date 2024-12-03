@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.scoottrack.notification.NotificationService;
 import pl.scoottrack.scooter.EditScooterRequest;
 import pl.scoottrack.scooter.Scooter;
-import pl.scoottrack.scooter.ScooterServiceImpl;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class AdminScooterServiceImpl implements AdminScooterService {
 
     private final AdminScooterRepository scooterRepository;
-    private final ScooterServiceImpl scooterServiceImpl;
+    private final NotificationService notificationService;
 
     @Override
     public Page<AdminScooterListResponse> getAllScooters(Pageable pageable) {
@@ -36,7 +36,7 @@ public class AdminScooterServiceImpl implements AdminScooterService {
 
     @Override
     public void editScooter(EditScooterRequest request) {
-        Scooter scooter = getScooter(request);
+        Scooter scooter = getScooter(request.scooterUuid());
 
         scooter.setName(request.name());
         scooter.setBrand(request.brand());
@@ -45,12 +45,17 @@ public class AdminScooterServiceImpl implements AdminScooterService {
 
         scooterRepository.save(scooter);
 
+        notificationService.sendNotification(scooter.getUser()
+                                                    .getEmail(), "Twoja hulajnoga została edytowana przez administratora");
         log.info("Scooter edited successfully");
     }
 
     @Override
     public void deleteScooter(UUID uuid) {
+        Scooter scooter = getScooter(uuid);
         scooterRepository.deleteByUuid(uuid);
+        notificationService.sendNotification(scooter.getUser()
+                                                    .getEmail(), "Twoja hulajnoga została usunięta przez administratora");
         log.info("Scooter deleted successfully");
     }
 
@@ -64,10 +69,10 @@ public class AdminScooterServiceImpl implements AdminScooterService {
                                             projection.getCountOfRepairs());
     }
 
-    private Scooter getScooter(EditScooterRequest request) {
-        return scooterRepository.findByUuid(request.scooterUuid())
+    private Scooter getScooter(UUID scooterUuid) {
+        return scooterRepository.findByUuid(scooterUuid)
                                 .orElseThrow(() -> {
-                                    log.error("Scooter with uuid: {} not found", request.scooterUuid());
+                                    log.error("Scooter with uuid: {} not found", scooterUuid);
                                     return new EntityNotFoundException("Nie znaleziono hulajnogi o podanym uuidzie");
                                 });
     }
