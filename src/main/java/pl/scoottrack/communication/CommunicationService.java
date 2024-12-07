@@ -1,4 +1,4 @@
-package pl.scoottrack.random;
+package pl.scoottrack.communication;
 
 public interface CommunicationService {
     String getRandomFactAboutCats();

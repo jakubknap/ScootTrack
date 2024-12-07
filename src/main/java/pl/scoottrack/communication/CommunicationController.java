@@ -1,4 +1,4 @@
-package pl.scoottrack.random;
+package pl.scoottrack.communication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
