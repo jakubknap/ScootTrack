@@ -1,7 +1,7 @@
 package pl.scoottrack.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import pl.scoottrack.user.User;
+import pl.scoottrack.user.model.User;
 
 import java.util.UUID;
 

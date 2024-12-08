@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
-import pl.scoottrack.role.Role;
-import pl.scoottrack.role.RoleRepository;
+import pl.scoottrack.role.model.Role;
+import pl.scoottrack.role.repository.RoleRepository;
 
 import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
 

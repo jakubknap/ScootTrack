@@ -9,9 +9,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import pl.scoottrack.scooter.Scooter;
-import pl.scoottrack.scooter.ScooterRepository;
-import pl.scoottrack.user.User;
+import pl.scoottrack.repair.model.Repair;
+import pl.scoottrack.repair.model.dto.AddRepairRequest;
+import pl.scoottrack.repair.model.dto.EditRepairRequest;
+import pl.scoottrack.repair.repository.RepairRepository;
+import pl.scoottrack.repair.service.impl.RepairServiceImpl;
+import pl.scoottrack.scooter.model.Scooter;
+import pl.scoottrack.scooter.repository.ScooterRepository;
+import pl.scoottrack.user.model.User;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,14 +42,13 @@ class RepairServiceImplTest {
     @InjectMocks
     private RepairServiceImpl repairService;
 
-    private User testUser;
     private User otherUser;
     private Scooter testScooter;
     private Repair testRepair;
 
     @BeforeEach
     void setUp() {
-        testUser = new User();
+        User testUser = new User();
         testUser.setUuid(UUID.randomUUID());
         testUser.setId(1L);
 

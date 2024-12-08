@@ -19,9 +19,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class JwtServiceTest {
 
-    private final String secretKey = "ZXMKQBBFCLH0ZPAHWN4YGVEGER5NUKD7FGD2321SADA213123DASDGFGFDGBNHJHGE";
-    private final long jwtExpiration = 8640000;
     private final String username = "jakub@scoottrack.pl";
+
     @Mock
     private UserDetails userDetails;
     @Mock
@@ -29,6 +28,8 @@ class JwtServiceTest {
 
     @BeforeEach
     void setUp() {
+        String secretKey = "ZXMKQBBFCLH0ZPAHWN4YGVEGER5NUKD7FGD2321SADA213123DASDGFGFDGBNHJHGE";
+        long jwtExpiration = 8640000;
         jwtService = new JwtService(secretKey, jwtExpiration);
     }
 
