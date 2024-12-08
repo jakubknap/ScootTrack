@@ -17,6 +17,7 @@ import pl.scoottrack.auth.dto.AuthenticationRequest;
 import pl.scoottrack.auth.dto.AuthenticationResponse;
 import pl.scoottrack.auth.dto.RegistrationRequest;
 import pl.scoottrack.email.EmailService;
+import pl.scoottrack.handler.DomainException;
 import pl.scoottrack.role.model.Role;
 import pl.scoottrack.role.repository.RoleRepository;
 import pl.scoottrack.security.JwtService;
@@ -155,14 +156,14 @@ public class AuthenticationService {
 
         if (nonNull(savedToken.getValidatedAt())) {
             log.error("Token: {} was used", token);
-            throw new RuntimeException("Token został już użyty");
+            throw new DomainException("Token został już użyty");
         }
 
         if (LocalDateTime.now()
                          .isAfter(savedToken.getExpiresAt())) {
             log.error("Token: {} expired", token);
             sendValidationEmail(savedToken.getUser());
-            throw new RuntimeException("Token wygasł. Nowy token został wysłany na adres e-mail");
+            throw new DomainException("Token wygasł. Nowy token został wysłany na adres e-mail");
         }
 
         User user = userRepository.findByEmail(savedToken.getUser()

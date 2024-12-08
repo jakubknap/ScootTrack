@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.scoottrack.handler.DomainException;
 import pl.scoottrack.repair.model.Repair;
 import pl.scoottrack.repair.model.dto.AddRepairRequest;
 import pl.scoottrack.repair.model.dto.EditRepairRequest;
@@ -48,7 +49,7 @@ public class RepairServiceImpl implements RepairService {
                       loggedUserUUID,
                       scooter.getUser()
                              .getUuid());
-            throw new RuntimeException("Nie jesteś upoważniony do dodania naprawy do tej hulajnogi");
+            throw new DomainException("Nie jesteś upoważniony do dodania naprawy do tej hulajnogi");
         }
 
         Repair repair = buildRepair(request, scooter, loggedUserUUID);
@@ -64,7 +65,7 @@ public class RepairServiceImpl implements RepairService {
         if (!repair.getCreatedBy()
                    .equals(getLoggedUser().getId())) {
             log.error("User is not authorized to edit this repair. User: {}, Repair Owner: {}", getLoggedUser().getId(), repair.getCreatedBy());
-            throw new RuntimeException("Nie jesteś upoważniony do edycji tej naprawy");
+            throw new DomainException("Nie jesteś upoważniony do edycji tej naprawy");
         }
 
         repair.setTitle(request.title());
@@ -82,7 +83,7 @@ public class RepairServiceImpl implements RepairService {
         if (!repair.getCreatedBy()
                    .equals(getLoggedUser().getId())) {
             log.error("User is not authorized to delete this repair. User: {}, Repair Owner: {}", getLoggedUser().getId(), repair.getCreatedBy());
-            throw new RuntimeException("Nie jesteś upoważniony do usunięcia tej naprawy");
+            throw new DomainException("Nie jesteś upoważniony do usunięcia tej naprawy");
         }
 
         repairRepository.delete(repair);
@@ -96,7 +97,7 @@ public class RepairServiceImpl implements RepairService {
         if (!repair.getCreatedBy()
                    .equals(getLoggedUser().getId())) {
             log.error("User is not authorized to view details of this repair. User: {}, Repair Owner: {}", getLoggedUser().getId(), repair.getCreatedBy());
-            throw new RuntimeException("Nie jesteś upoważniony do podglądu tej naprawy");
+            throw new DomainException("Nie jesteś upoważniony do podglądu tej naprawy");
         }
         return new RepairDetailsResponse(repair.getTitle(),
                                          repair.getDescription(),

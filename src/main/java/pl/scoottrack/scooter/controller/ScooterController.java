@@ -1,5 +1,7 @@
 package pl.scoottrack.scooter.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +36,20 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/scooter")
 @RequiredArgsConstructor
-@Tag(name = "Scooter")
+@Tag(name = "Scooter", description = "Endpointy do zarządzania hulajnogami")
 public class ScooterController {
 
     private final ScooterService scooterService;
 
+    @Operation(
+            summary = "Dodaj hulajnogę",
+            description = "Dodaje nową hulajnogę do systemu",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Hulajnoga została pomyślnie dodana"),
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe"),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+            }
+    )
     @PostMapping
     @ResponseStatus(CREATED)
     public void addScooter(@RequestBody @Valid AddScooterRequest request) {
@@ -46,36 +57,94 @@ public class ScooterController {
         scooterService.addScooter(request);
     }
 
+    @Operation(
+            summary = "Edytuj hulajnogę",
+            description = "Pozwala edytować istniejącą hulajnogę w systemie",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Hulajnoga została pomyślnie edytowana"),
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe"),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+            }
+    )
     @PutMapping
     public void editScooter(@RequestBody @Valid EditScooterRequest request) {
         log.info("Edit scooter request: {}", request);
         scooterService.editScooter(request);
     }
 
+    @Operation(
+            summary = "Usuń hulajnogę",
+            description = "Usuwa wybraną hulajnogę z systemu",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Hulajnoga została pomyślnie usunięta"),
+                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do usunięcia hulajnogi"),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+            }
+    )
     @DeleteMapping("/{uuid}")
     public void deleteScooter(@PathVariable UUID uuid) {
         log.info("Delete scooter with uuid: {}", uuid);
         scooterService.deleteScooter(uuid);
     }
 
+    @Operation(
+            summary = "Pobierz szczegóły hulajnogi",
+            description = "Zwraca szczegółowe informacje o wybranej hulajnodze",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Szczegóły hulajnogi zostały pobrane"),
+                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do podglądu hulajnogi"),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+            }
+    )
     @GetMapping("/{uuid}")
     public ScooterDetailsResponse getScooterDetails(@PathVariable UUID uuid) {
         log.info("Get scooter details with uuid: {}", uuid);
         return scooterService.getScooterDetails(uuid);
     }
 
+    @Operation(
+            summary = "Pobierz szczegóły hulajnogi z naprawami",
+            description = "Zwraca szczegółowe informacje o hulajnodze oraz jej naprawach",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Szczegóły hulajnogi z naprawami zostały pobrane"),
+                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do podglądu hulajnogi"),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+            }
+    )
     @GetMapping("/{uuid}/extended")
     public ScooterDetailsExtendedResponse getScooterDetailsExtended(@PathVariable UUID uuid) {
         log.info("Get scooter details with repairs for scooter with uuid: {}", uuid);
         return scooterService.getScooterDetailsExtended(uuid);
     }
 
+    @Operation(
+            summary = "Pobierz wszystkie hulajnogi użytkownika",
+            description = "Zwraca listę wszystkich hulajnóg przypisanych do aktualnie zalogowanego użytkownika",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista hulajnóg została pobrana"),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+            }
+    )
     @GetMapping("/search")
     public Page<ScooterListResponse> getAllScooters(@PageableDefault(size = 2, sort = "createdDate", direction = DESC) Pageable pageable) {
         log.info("Get all user scooters");
         return scooterService.getAllScooters(pageable);
     }
 
+    @Operation(
+            summary = "Pobierz naprawy hulajnogi",
+            description = "Zwraca listę napraw przypisanych do wybranej hulajnogi",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista napraw hulajnogi została pobrana"),
+                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do podglądu napraw hulajnogi"),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+            }
+    )
     @GetMapping("/{uuid}/repairs")
     public List<RepairDetailsResponse> getScooterRepairs(@PathVariable UUID uuid) {
         log.info("Get scooter repairs for scooter with uuid: {}", uuid);

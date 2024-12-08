@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import pl.scoottrack.handler.DomainException;
 import pl.scoottrack.repair.model.Repair;
 import pl.scoottrack.repair.model.dto.RepairDetailsResponse;
 import pl.scoottrack.repair.repository.RepairRepository;
@@ -117,7 +118,7 @@ public class ScooterServiceImplTest {
 
         when(scooterRepository.findByUuid(request.scooterUuid())).thenReturn(Optional.of(testScooter));
 
-        assertThrows(RuntimeException.class, () -> scooterService.editScooter(request));
+        assertThrows(DomainException.class, () -> scooterService.editScooter(request));
     }
 
     @Test
@@ -137,7 +138,7 @@ public class ScooterServiceImplTest {
 
         when(scooterRepository.findByUuid(testScooter.getUuid())).thenReturn(Optional.of(testScooter));
 
-        assertThrows(RuntimeException.class, () -> scooterService.deleteScooter(testScooter.getUuid()));
+        assertThrows(DomainException.class, () -> scooterService.deleteScooter(testScooter.getUuid()));
     }
 
     @Test
@@ -214,7 +215,7 @@ public class ScooterServiceImplTest {
         EditScooterRequest request = new EditScooterRequest(testScooter.getUuid(), "NewName", "NewBrand", "NewModel", "NewType");
         when(scooterRepository.findByUuid(testScooter.getUuid())).thenReturn(Optional.of(testScooter));
 
-        assertThrows(RuntimeException.class, () -> scooterService.editScooter(request), "Nie jesteś upoważniony do edycji tej hulajnogi");
+        assertThrows(DomainException.class, () -> scooterService.editScooter(request), "Nie jesteś upoważniony do edycji tej hulajnogi");
     }
 
     @Test
@@ -223,7 +224,7 @@ public class ScooterServiceImplTest {
 
         when(scooterRepository.findByUuid(testScooter.getUuid())).thenReturn(Optional.of(testScooter));
 
-        assertThrows(RuntimeException.class, () -> scooterService.deleteScooter(testScooter.getUuid()), "Nie jesteś upoważniony do usunięcia tej hulajnogi");
+        assertThrows(DomainException.class, () -> scooterService.deleteScooter(testScooter.getUuid()), "Nie jesteś upoważniony do usunięcia tej hulajnogi");
     }
 
     private void setLoggedUser(User user) {

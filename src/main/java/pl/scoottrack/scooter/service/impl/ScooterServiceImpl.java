@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.scoottrack.handler.DomainException;
 import pl.scoottrack.repair.model.dto.RepairDetailsResponse;
 import pl.scoottrack.repair.repository.RepairRepository;
 import pl.scoottrack.scooter.model.Scooter;
@@ -54,7 +55,7 @@ public class ScooterServiceImpl implements ScooterService {
                       user.getUuid(),
                       scooter.getUser()
                              .getUuid());
-            throw new RuntimeException("Nie jesteś upoważniony do edycji tej hulajnogi");
+            throw new DomainException("Nie jesteś upoważniony do edycji tej hulajnogi");
         }
 
         scooter.setName(request.name());
@@ -78,7 +79,7 @@ public class ScooterServiceImpl implements ScooterService {
                       loggedUserUUID,
                       scooter.getUser()
                              .getUuid());
-            throw new RuntimeException("Nie jesteś upoważniony do usunięcia tej hulajnogi");
+            throw new DomainException("Nie jesteś upoważniony do usunięcia tej hulajnogi");
         }
 
         scooterRepository.delete(scooter);
@@ -97,7 +98,7 @@ public class ScooterServiceImpl implements ScooterService {
                       loggedUserUUID,
                       scooter.getUser()
                              .getUuid());
-            throw new RuntimeException("Nie jesteś upoważniony do podglądu tej hulajnogi");
+            throw new DomainException("Nie jesteś upoważniony do podglądu tej hulajnogi");
         }
 
         return new ScooterDetailsResponse(scooter.getName(),
@@ -140,7 +141,7 @@ public class ScooterServiceImpl implements ScooterService {
                       loggedUserUUID,
                       scooter.getUser()
                              .getUuid());
-            throw new RuntimeException("Nie jesteś upoważniony do podglądu napraw tej hulajnogi");
+            throw new DomainException("Nie jesteś upoważniony do podglądu napraw tej hulajnogi");
         }
 
         return repairRepository.findAllRepairsByScooterUuid(scooterUuid);

@@ -1,5 +1,6 @@
 package pl.scoottrack.handler;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
@@ -39,11 +41,27 @@ public class GlobalExceptionHandler {
                                                     .build());
     }
 
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<ExceptionResponse> handleException(DomainException exp) {
+        return ResponseEntity.status(BAD_REQUEST)
+                             .body(ExceptionResponse.builder()
+                                                    .error(exp.getMessage())
+                                                    .build());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException exp) {
+        return ResponseEntity.status(NOT_FOUND)
+                             .body(ExceptionResponse.builder()
+                                                    .error(exp.getMessage())
+                                                    .build());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception exp) {
         return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                              .body(ExceptionResponse.builder()
-                                                    .error(exp.getMessage())
+                                                    .error("Błąd wewnętrzny serwera")
                                                     .build());
     }
 }

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import pl.scoottrack.handler.DomainException;
 import pl.scoottrack.repair.model.Repair;
 import pl.scoottrack.repair.model.dto.AddRepairRequest;
 import pl.scoottrack.repair.model.dto.EditRepairRequest;
@@ -94,7 +95,7 @@ class RepairServiceImplTest {
 
         when(scooterRepository.findByUuid(testScooter.getUuid())).thenReturn(Optional.of(testScooter));
 
-        assertThrows(RuntimeException.class, () -> repairService.addRepair(request), "Nie jesteś upoważniony do dodania naprawy do tej hulajnogi");
+        assertThrows(DomainException.class, () -> repairService.addRepair(request), "Nie jesteś upoważniony do dodania naprawy do tej hulajnogi");
     }
 
     @Test
@@ -119,7 +120,7 @@ class RepairServiceImplTest {
 
         when(repairRepository.findByUuid(testRepair.getUuid())).thenReturn(Optional.of(testRepair));
 
-        assertThrows(RuntimeException.class, () -> repairService.editRepair(request), "Nie jesteś upoważniony do edycji tej naprawy");
+        assertThrows(DomainException.class, () -> repairService.editRepair(request), "Nie jesteś upoważniony do edycji tej naprawy");
     }
 
     @Test
@@ -137,7 +138,7 @@ class RepairServiceImplTest {
 
         when(repairRepository.findByUuid(testRepair.getUuid())).thenReturn(Optional.of(testRepair));
 
-        assertThrows(RuntimeException.class, () -> repairService.deleteRepair(testRepair.getUuid()), "Nie jesteś upoważniony do usunięcia tej naprawy");
+        assertThrows(DomainException.class, () -> repairService.deleteRepair(testRepair.getUuid()), "Nie jesteś upoważniony do usunięcia tej naprawy");
     }
 
     private void setLoggedUser(User user) {
