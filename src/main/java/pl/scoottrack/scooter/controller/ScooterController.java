@@ -1,6 +1,7 @@
 package pl.scoottrack.scooter.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -62,7 +63,7 @@ public class ScooterController {
             description = "Pozwala edytować istniejącą hulajnogę w systemie",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Hulajnoga została pomyślnie edytowana"),
-                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe"),
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do hulajnogi"),
                     @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
                     @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
             }
@@ -78,7 +79,7 @@ public class ScooterController {
             description = "Usuwa wybraną hulajnogę z systemu",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Hulajnoga została pomyślnie usunięta"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do usunięcia hulajnogi"),
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy"),
                     @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
                     @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
             }
@@ -94,9 +95,9 @@ public class ScooterController {
             description = "Zwraca szczegółowe informacje o wybranej hulajnodze",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Szczegóły hulajnogi zostały pobrane"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do podglądu hulajnogi"),
-                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/{uuid}")
@@ -110,9 +111,9 @@ public class ScooterController {
             description = "Zwraca szczegółowe informacje o hulajnodze oraz jej naprawach",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Szczegóły hulajnogi z naprawami zostały pobrane"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do podglądu hulajnogi"),
-                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/{uuid}/extended")
@@ -126,7 +127,7 @@ public class ScooterController {
             description = "Zwraca listę wszystkich hulajnóg przypisanych do aktualnie zalogowanego użytkownika",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista hulajnóg została pobrana"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/search")
@@ -140,9 +141,9 @@ public class ScooterController {
             description = "Zwraca listę napraw przypisanych do wybranej hulajnogi",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista napraw hulajnogi została pobrana"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do podglądu napraw hulajnogi"),
-                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/{uuid}/repairs")

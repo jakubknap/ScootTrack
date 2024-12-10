@@ -1,6 +1,7 @@
 package pl.scoottrack.admin.repair.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -35,7 +36,7 @@ public class AdminRepairController {
             description = "Zwraca paginowaną listę napraw zarejestrowanych w systemie",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista napraw została pomyślnie pobrana"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping

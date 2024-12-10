@@ -1,6 +1,7 @@
 package pl.scoottrack.communication.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class CommunicationController {
             description = "Wywołuje zewnętrzny serwis API, aby pobrać losową ciekawostkę o kotach",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Losowa ciekawostka o kotach została pobrana"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/random-facts")
@@ -38,7 +39,7 @@ public class CommunicationController {
             description = "Przykładowe wywołanie wewnętrznego serwisu w aplikacji lub innym module",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Odpowiedź z drugiego serwisu została uzyskana"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/service-b")

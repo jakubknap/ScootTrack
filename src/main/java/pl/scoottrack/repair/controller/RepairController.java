@@ -1,6 +1,7 @@
 package pl.scoottrack.repair.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -44,8 +45,7 @@ public class RepairController {
             description = "Dodaje nową naprawę do wybranej hulajnogi przypisanej do użytkownika",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Naprawa została pomyślnie dodana"),
-                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do dodania naprawy"),
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy"),
                     @ApiResponse(responseCode = "404", description = "Hulajnoga nie istnieje"),
                     @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
             }
@@ -62,8 +62,7 @@ public class RepairController {
             description = "Pozwala edytować istniejącą naprawę przypisaną do użytkownika",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Naprawa została pomyślnie edytowana"),
-                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do edycji naprawy"),
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy"),
                     @ApiResponse(responseCode = "404", description = "Naprawa nie istnieje"),
                     @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
             }
@@ -79,7 +78,7 @@ public class RepairController {
             description = "Usuwa wybraną naprawę przypisaną do użytkownika",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Naprawa została pomyślnie usunięta"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do usunięcia naprawy"),
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy"),
                     @ApiResponse(responseCode = "404", description = "Naprawa nie istnieje"),
                     @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
             }
@@ -95,9 +94,9 @@ public class RepairController {
             description = "Zwraca szczegółowe informacje o wybranej naprawie",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Szczegóły naprawy zostały pobrane"),
-                    @ApiResponse(responseCode = "403", description = "Brak uprawnień do podglądu naprawy"),
-                    @ApiResponse(responseCode = "404", description = "Naprawa nie istnieje"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe lub brak uprawnień do naprawy", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Naprawa nie istnieje", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/{uuid}")
@@ -111,7 +110,7 @@ public class RepairController {
             description = "Zwraca listę wszystkich napraw przypisanych do aktualnie zalogowanego użytkownika",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista napraw została pobrana"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/search")
@@ -125,7 +124,7 @@ public class RepairController {
             description = "Zwraca statystyki dotyczące wszystkich napraw użytkownika, takie jak ich liczba, suma kosztów i średni koszt naprawy",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Statystyki napraw zostały pobrane"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping("/stats")

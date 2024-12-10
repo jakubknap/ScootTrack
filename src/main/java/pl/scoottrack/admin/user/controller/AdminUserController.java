@@ -1,6 +1,7 @@
 package pl.scoottrack.admin.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class AdminUserController {
             description = "Zwraca paginowaną listę użytkowników systemu",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista użytkowników została pomyślnie pobrana"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping

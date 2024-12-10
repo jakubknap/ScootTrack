@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.scoottrack.communication.service.CommunicationService;
+import pl.scoottrack.handler.DomainException;
 
 import java.util.Optional;
 
@@ -26,14 +27,14 @@ public class CommunicationServiceImpl implements CommunicationService {
         try {
             response = restTemplate.getForObject(uri, FactResponse.class);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new DomainException(e.getMessage());
         }
 
         return Optional.ofNullable(response)
                        .map(resp -> "Fact: \n" + resp.fact)
                        .orElseThrow(() -> {
                            log.error("Could not get random fact about cats");
-                           return new RuntimeException("Nie można pobrać ciekawostki o kotach");
+                           return new DomainException("Nie można pobrać ciekawostki o kotach");
                        });
     }
 
@@ -46,13 +47,13 @@ public class CommunicationServiceImpl implements CommunicationService {
         try {
             response = restTemplate.getForObject(uri, String.class);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new DomainException(e.getMessage());
         }
 
         return Optional.ofNullable(response)
                        .orElseThrow(() -> {
                            log.error("Could not call another service");
-                           return new RuntimeException("Nie można uzyskać odpowiedzi z drugiego serwisu");
+                           return new DomainException("Nie można uzyskać odpowiedzi z drugiego serwisu");
                        });
     }
 

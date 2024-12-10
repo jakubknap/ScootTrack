@@ -1,6 +1,7 @@
 package pl.scoottrack.admin.scooter.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class AdminScooterController {
             description = "Zwraca paginowaną listę hulajnóg dostępnych w systemie",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista hulajnóg została pomyślnie pobrana"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @GetMapping

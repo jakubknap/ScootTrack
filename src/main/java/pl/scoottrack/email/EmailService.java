@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import pl.scoottrack.handler.DomainException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class EmailService {
             mailSender.send(mimeMessage);
             log.info("Email sent");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new DomainException(e.getMessage());
         }
     }
 }

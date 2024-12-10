@@ -1,6 +1,7 @@
 package pl.scoottrack.auth.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,7 +34,6 @@ public class AuthenticationController {
             responses = {
                     @ApiResponse(responseCode = "202", description = "Użytkownik zarejestrowany pomyślnie"),
                     @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe"),
-                    @ApiResponse(responseCode = "409", description = "Użytkownik o podanym e-mailu już istnieje"),
                     @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
             }
     )
@@ -48,10 +48,9 @@ public class AuthenticationController {
             description = "Loguje użytkownika i zwraca token JWT w przypadku pomyślnej autoryzacji",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Użytkownik zalogowany pomyślnie"),
-                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe"),
-                    @ApiResponse(responseCode = "401", description = "Niepoprawne dane logowania"),
-                    @ApiResponse(responseCode = "403", description = "Konto użytkownika jest zablokowane lub nieaktywne"),
-                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera")
+                    @ApiResponse(responseCode = "400", description = "Nieprawidłowe dane wejściowe", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Niepoprawne dane logowania", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Błąd wewnętrzny serwera", content = @Content)
             }
     )
     @PostMapping("/login")
