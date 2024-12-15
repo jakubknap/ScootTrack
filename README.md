@@ -23,21 +23,21 @@ Key features of the application:
 - WebSocket
 
 ## Setup
-0. Before starting: You must have docker installed and running
+0. **Before starting:** You must have docker installed and running
 
 1. Clone the repository:
 ```bash
-   git clone https://github.com/jakubknap/ScootTrack.git
+git clone https://github.com/jakubknap/ScootTrack.git
 ```
 
 2. Go to the project directory and start the containers with the command:
 ```bash
-   docker compose up -d
+docker compose up -d
 ```
 
 2. Run the application
 ```bash
-  mvn spring-boot:run
+mvn spring-boot:run
 ```
 
 ## API
