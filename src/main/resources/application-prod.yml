@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ScootTrack
-    username: username
-    password: password
+    url: jdbc:postgresql://baza-scootrack.pl:5432/ScootTrack
+    username: superUser
+    password: superPassword
   mail:
-    host: localhost
+    host: mail-server-scootrack.pl
     port: 1025
-    username: username
-    password: password
+    username: superUser
+    password: superPassword
 
 application:
   security:
