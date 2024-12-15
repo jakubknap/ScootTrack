@@ -40,6 +40,16 @@ docker compose up -d
 mvn spring-boot:run
 ```
 
+3. **[Optional]** Run the Spring Boot application using the java -jar command after building through maven<br>
+Go to the project directory and run app with the command:
+```bash
+java -jar .\target\ScootTrack-1.0.0.jar
+```
+Or use application profiling:
+```bash
+java -jar "-Dspring.profiles.active=dev" .\target\ScootTrack-1.0.0.jar
+```
+
 ## API
 - You can check the functionality of the backend itself using swagger: http://localhost:8088/swagger-ui.html  Important! Remember about authentication
 
